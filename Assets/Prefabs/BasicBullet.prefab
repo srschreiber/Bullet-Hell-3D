@@ -110,6 +110,8 @@ MonoBehaviour:
   physicalDamage: 0
   firedFrom: {x: 0, y: 0, z: 0}
   range: 10
+  name: Basic Shot
+  shotBy: {fileID: 0}
 --- !u!54 &1320054421053047661
 Rigidbody:
   m_ObjectHideFlags: 0

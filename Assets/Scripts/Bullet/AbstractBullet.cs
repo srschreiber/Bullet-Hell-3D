@@ -13,6 +13,12 @@ namespace BulletHell {
 
         private Rigidbody _rb;
 
+        public string name;
+
+        private BulletPool bulletPool;
+
+        public AbstractCharacter shotBy;
+
         private void Awake() {
             _rb = GetComponent<Rigidbody>();
         }
@@ -26,7 +32,10 @@ namespace BulletHell {
         // Update is called once per frame
         void Update()
         {
-            
+            if (shotBy == null)
+                return;
+            bulletPool = shotBy.bulletPool;
+            bulletPool.MaybeMakeBulletInactive(this);
         }
 
         public bool isActive() {

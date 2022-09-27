@@ -9,13 +9,13 @@ namespace BulletHell {
         public float jumpSpeed = 8.0F;
         //public float gravity = 20.0F;
         private Vector3 moveDirection = Vector3.zero;
-        public BulletPool bulletPool;
         public AbstractBullet basicShot;
         
         // Start is called before the first frame update
         void Start()
         {
-            bulletPool.registerBullet(basicShot);
+            Debug.Log(basicShot.name);
+            bulletPool.registerBullet(basicShot.name);
         }
 
         // Update is called once per frame
@@ -26,6 +26,7 @@ namespace BulletHell {
                 var position = transform.position + transform.forward;
                 var rotation = transform.rotation;
                 var projectile = bulletPool.getFreshBullet(basicShot, position, rotation);
+                projectile.shotBy = this;
                 projectile.Fire(10, transform.forward);
             }
 

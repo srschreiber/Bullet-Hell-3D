@@ -5,6 +5,7 @@ using UnityEngine;
 namespace BulletHell {
     public class AbstractCharacter : MonoBehaviour
     {
+        public BulletPool bulletPool;
         protected int health
         {
             get { return health; }
