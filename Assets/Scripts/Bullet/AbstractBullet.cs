@@ -13,7 +13,7 @@ namespace BulletHell {
 
         private Rigidbody _rb;
 
-        public string name;
+        public string bulletName;
 
         private BulletPool bulletPool;
 
@@ -21,12 +21,6 @@ namespace BulletHell {
 
         private void Awake() {
             _rb = GetComponent<Rigidbody>();
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            
         }
 
         // Update is called once per frame

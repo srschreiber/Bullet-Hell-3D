@@ -7,40 +7,42 @@ namespace BulletHell {
     {
         public float speed = 6.0F;
         public float jumpSpeed = 8.0F;
+        public float dodgeCoolDownSeconds = 2F;
+        public float dodgeDurationSeconds = 1F;
+        public float dodgeSpeedMultiplier = 3F;
         //public float gravity = 20.0F;
         private Vector3 moveDirection = Vector3.zero;
-        public AbstractBullet basicShot;
+        private float lastDodge = -1;
         
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log(basicShot.name);
-            bulletPool.registerBullet(basicShot.name);
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                var position = transform.position + transform.forward;
-                var rotation = transform.rotation;
-                var projectile = bulletPool.getFreshBullet(basicShot, position, rotation);
-                projectile.shotBy = this;
-                projectile.Fire(10, transform.forward);
+            float effectiveSpeed = speed;
+
+            if (Input.GetKeyDown(KeyCode.Space) && (lastDodge == -1 || Time.time > lastDodge + dodgeCoolDownSeconds)) {
+                lastDodge = Time.time;
+            }
+
+            if (lastDodge != -1 && Time.time < lastDodge + dodgeDurationSeconds) {
+                effectiveSpeed *= dodgeSpeedMultiplier;
             }
 
             CharacterController controller = GetComponent<CharacterController>();
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= speed;
+            moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            //moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection *= effectiveSpeed;
             //moveDirection.y -= gravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
 
             Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             float rayLength;
-    
+
             // intersect ray with plane
             if (groundPlane.Raycast(cameraRay, out rayLength))
             {
